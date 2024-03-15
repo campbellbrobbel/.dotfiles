@@ -70,6 +70,8 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
+    lspconfig["clangd"].setup({})
+
     -- configure html server
     lspconfig["html"].setup({
       capabilities = capabilities,
