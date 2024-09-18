@@ -1,0 +1,6 @@
+SESSION_NAME=$1
+tmux new-session -d -s $SESSION_NAME -n editor
+tmux new-window -n nvim -e "nvim ." 
+tmux new-window -n terminal 
+tmux new-window -n docker
+tmux attach -t $SESSION_NAME 

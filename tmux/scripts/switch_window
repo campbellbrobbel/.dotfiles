@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+function main {
+  local windows
+  local window 
+  local query
+  local window_arr 
+  local retval
+
+  sessions=$(tmux list-windows -F "#{window_name}" |
+    fzf --header "Select window" --prompt "Window name: " --exit-0 --print-query --reverse)
+  retval=$?
+
+  IFS=$'\n' read -rd '' -a window_arr <<<"$windows"
+
+  window=${window_arr[1]}
+  query=${window_arr[0]}
+
+  if [ $retval == 0 ]; then
+    if [ "$window" == "" ]; then
+      window="$query"
+    fi
+    tmux select-window -t "$window"
+  # elif [ $retval == 1 ]; then
+  #   tmux command-prompt -b -p "Press enter to create and go to [$query] session" \
+  #     "run '$CURRENT_DIR/make_new_session\"$query\" \"%1\"'"
+  fi
+}
+main

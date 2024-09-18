@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+function main {
+  local name 
+  read -p "Window name: " name
+  if [ -z "$name" ]; then
+      # Display tmux alert if string is empty
+      tmux display-message "Window name cannot be empty!"
+  else
+      # Create a new tmux window with the specified name
+      tmux new-window -n "$name"
+  fi
+}
+main

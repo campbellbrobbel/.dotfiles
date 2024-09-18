@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+function main {
+  local sessions
+  local selected_sessions
+  local retval
+
+  # Get a list of tmux sessions and allow multiple selection with fzf
+  selected_sessions=$(tmux list-sessions -F "#{session_name}" |
+    fzf --header "Select sessions to kill" --exit-0 --multi --reverse)
+
+  retval=$?
+
+  # Check the return value of fzf
+  if [ $retval == 0 ]; then
+    # Read the selected sessions into an array
+    IFS=$'\n' read -rd '' -a sess_arr <<<"$selected_sessions"
+
+    # Iterate over each selected session and kill it
+    for session in "${sess_arr[@]}"; do
+      tmux kill-session -t "$session"
+    done
+
+    echo "Killed sessions: ${sess_arr[*]}"
+  elif [ $retval == 1 ]; then
+    echo "No sessions selected."
+  fi
+}
+
+main
