@@ -1,7 +1,10 @@
+DOTFILE_DIR=$(pwd)
 # Add .config folders
-ln -s ./nvim ~/.config/nvim
-ln -s ./tmux ~/.config/tmux
+cd ~/.config
+ln -s $DOTFILE_DIR/nvim .
+ln -s $DOTFILE_DIR/tmux .
 
 # .zshrc file
-ln -s ./zshrc ~/.zshrc
+cd ~
+ln -s $DOTFILE_DIR/.zshrc .zshrc
 
