@@ -1,0 +1,7 @@
+# Add .config folders
+ln -s ./nvim ~/.config/nvim
+ln -s ./tmux ~/.config/tmux
+
+# .zshrc file
+ln -s ./zshrc ~/.zshrc
+
