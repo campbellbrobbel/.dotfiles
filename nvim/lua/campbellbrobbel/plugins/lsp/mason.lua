@@ -24,6 +24,12 @@ return {
       },
     })
 
+    local mason_dap = require("mason-nvim-dap")
+
+    mason_dap.setup({
+      ensure_installed = { "js-debug-adapter" },
+    })
+
     mason_lspconfig.setup({
       -- list of servers for mason to install
       ensure_installed = {

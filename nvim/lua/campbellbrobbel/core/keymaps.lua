@@ -10,8 +10,8 @@ local keymap = vim.keymap -- for conciseness
 vim.keymap.set("n", "<leader>pv", ":q<CR>")
 
 -- shift cursor to middle of the screen when navigating up and down
-keymap.set("n", "<C-d>", "<C-d>zz")
-keymap.set("n", "<C-u>", "<C-u>zz")
+keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Navigate down" })
+keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Navigate up" })
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
@@ -23,7 +23,7 @@ keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 -- source the file
 keymap.set("n", "<leader><leader>", function()
   vim.cmd("so")
-end)
+end, { desc = "Source the file" })
 
 keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")

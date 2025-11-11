@@ -11,7 +11,11 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ { import = "campbellbrobbel.plugins" }, { import = "campbellbrobbel.plugins.lsp" } }, {
+require("lazy").setup({
+  { import = "campbellbrobbel.plugins" },
+  { import = "campbellbrobbel.plugins.lsp" },
+  { import = "campbellbrobbel.plugins.dap" },
+}, {
   install = {
     colorscheme = { "nightfly" },
   },

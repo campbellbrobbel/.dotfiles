@@ -5,7 +5,9 @@ return {
     vim.o.timeout = true
     vim.o.timeoutlen = 500
     local keymap = vim.keymap -- for conciseness
-    keymap.set("n", "<leader>wk", ":WhichKey<CR>")
+    local opts = {}
+    opts.desc = "Show Which Key"
+    keymap.set("n", "<leader>wk", ":WhichKey<CR>", opts)
   end,
   opts = {
     -- your configuration comes here

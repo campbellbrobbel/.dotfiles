@@ -17,7 +17,36 @@ return {
     local opts = { noremap = true, silent = true }
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
-
+      vim.diagnostic.config({
+        float = {
+          width = 120, -- Larger width
+          max_width = 120, -- Maximum width
+          max_height = 120, -- Maximum height
+          border = "rounded",
+          source = "always", -- Show source
+          header = "", -- Remove header
+          prefix = "", -- Remove prefix
+          focusable = true,
+          -- Center on screen
+          anchor = "SW",
+          relative = "editor",
+          row = math.floor(vim.o.lines * 0.3), -- 30% from top
+          col = math.floor(vim.o.columns * 0.5), -- Centered
+          style = "minimal",
+        },
+      })
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        -- Dimensions
+        width = 120,
+        border = "rounded",
+        -- Positioning
+        relative = "editor",
+        row = math.floor(vim.o.lines * 0.3), -- 30% from top
+        col = math.floor(vim.o.columns * 0.5), -- Centered
+        -- Style
+        focusable = true,
+        style = "minimal",
+      })
       -- set keybinds
       opts.desc = "Show LSP references"
       keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references

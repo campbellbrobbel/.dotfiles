@@ -21,6 +21,15 @@ return {
           },
         },
       },
+      pickers = {
+        find_files = {
+          file_ignore_patterns = { "node_modules", ".git", "infrastructure/" },
+          hidden = true,
+        },
+        live_grep = {
+          file_ignore_patterns = { "node_modules", "%.lock" },
+        },
+      },
     })
 
     telescope.load_extension("fzf")
