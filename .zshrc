@@ -127,3 +127,4 @@ precmd() {
 
 # Include auto-suggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+export PATH="$HOME/.local/bin:$PATH"
