@@ -49,13 +49,33 @@ return {
       },
     }
 
+    -- shows the names of any LSP clients attached to the current buffer
+    local function lsp_clients()
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      if #clients == 0 then
+        return ""
+      end
+      local names = {}
+      for _, client in ipairs(clients) do
+        table.insert(names, client.name)
+      end
+      return " " .. table.concat(names, ", ")
+    end
+
     -- configure lualine with modified theme
     lualine.setup({
       options = {
         theme = my_lualine_theme,
       },
       sections = {
-        lualine_a = {
+        -- a: current mode (Normal/Insert/Visual/...), colored per-mode
+        lualine_a = { "mode" },
+
+        -- b: git branch + diagnostic counts
+        lualine_b = { "branch", "diagnostics" },
+
+        -- c: filename (single source of truth, with modified/readonly markers)
+        lualine_c = {
           {
             "filename",
             file_status = true, -- Displays file status (readonly status, modified status)
@@ -76,16 +96,27 @@ return {
             },
           },
         },
+
+        -- x: lazy.nvim pending updates, git diff, attached LSP client(s)
         lualine_x = {
           {
             lazy_status.updates,
             cond = lazy_status.has_updates,
             color = { fg = "#ff9e64" },
           },
-          { "encoding" },
-          { "fileformat" },
-          { "filetype" },
+          { "diff" },
+          { lsp_clients, color = { fg = colors.blue } },
         },
+
+        -- y: filetype, plus encoding/fileformat only when they're non-default
+        lualine_y = {
+          "filetype",
+          { "encoding", cond = function() return vim.bo.fenc ~= "" and vim.bo.fenc ~= "utf-8" end },
+          { "fileformat", cond = function() return vim.bo.fileformat ~= "unix" end },
+        },
+
+        -- z: file progress % and cursor location
+        lualine_z = { "progress", "location" },
       },
     })
   end,
