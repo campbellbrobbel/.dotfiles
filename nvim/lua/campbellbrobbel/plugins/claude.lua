@@ -5,6 +5,12 @@ return {
     terminal = {
       auto_insert = true, -- stay in Normal mode so <leader>a* mappings work without <C-\><C-n> first
       snacks_win_opts = {
+        -- Centered floating window instead of the default right split
+        position = "float",
+        width = 0.85,
+        height = 0.85,
+        border = "rounded",
+        backdrop = 80,
         keys = {
           -- Double <Esc> exits terminal mode; a single <Esc> still reaches
           -- Claude Code's TUI (e.g. to clear input), since nvim waits
