@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
+set -e
 
+[[ $# == 1 && -n $1 ]] || { printf 'Usage: make_new_session name\n' >&2; exit 2; }
 SESSION_NAME=$1
-
-function main {
-  tmux new-session -d -s "$SESSION_NAME"
-  tmux switch-client -t "$SESSION_NAME"
-}
-main
+if ! tmux has-session -t "=$SESSION_NAME" 2>/dev/null; then
+    tmux new-session -d -s "$SESSION_NAME"
+fi
+if [[ -n $TMUX ]]; then
+    tmux switch-client -t "=$SESSION_NAME"
+else
+    tmux attach-session -t "=$SESSION_NAME"
+fi

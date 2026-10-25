@@ -1,30 +1,20 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-function main {
-  local sessions
-  local session
-  local query
-  local sess_arr
-  local retval
-
-  sessions=$(tmux list-sessions -F "#{session_name}" |
-    fzf --header "Select session" --prompt "Session name: " --exit-0 --print-query --reverse)
-  retval=$?
-
-  IFS=$'\n' read -rd '' -a sess_arr <<<"$sessions"
-
-  session=${sess_arr[1]}
-  query=${sess_arr[0]}
-
-  if [ $retval == 0 ]; then
-    if [ "$session" == "" ]; then
-      session="$query"
-    fi
-    tmux switch-client -t "$session"
-  elif [ $retval == 1 ]; then
-    tmux command-prompt -b -p "Press enter to create and go to [$query] session" \
-      "run '$CURRENT_DIR/make_new_session\"$query\" \"%1\"'"
-  fi
-}
-main
+selection=$(tmux list-sessions -F '#{session_name}' |
+    fzf --header 'Select session; type a new name to create one' \
+        --prompt 'Session name: ' --exit-0 --print-query --reverse)
+status=$?
+case $status in
+    0)
+        [[ $selection == *$'\n'* ]] || exit 0
+        session=${selection#*$'\n'}
+        [[ -n $session ]] || exit 0
+        tmux switch-client -t "=$session"
+        ;;
+    1)
+        # fzf prints the query even when there is no matching session.
+        [[ -n $selection ]] || exit 0
+        "$CURRENT_DIR/make_new_session" "$selection"
+        ;;
+esac

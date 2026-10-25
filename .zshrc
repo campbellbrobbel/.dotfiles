@@ -6,7 +6,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:~/.config/tmux/scripts:~/PhpstormProjects/client-disney-streaming/scripts:$PATH
+export PATH="$HOME/bin:$HOME/.config/tmux/scripts:$HOME/PhpstormProjects/client-disney-streaming/scripts:$PATH"
+# Prefer native Homebrew in both login and non-login interactive shells.
+if [[ -d /opt/homebrew/bin ]]; then
+  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+fi
+typeset -U path PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -76,7 +81,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search fzf-tab)
+plugins=(git web-search fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -125,6 +130,5 @@ precmd() {
 }
 
 
-# Include auto-suggestions
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Autosuggestions is loaded by the Oh My Zsh plugin above.
 export PATH="$HOME/.local/bin:$PATH"

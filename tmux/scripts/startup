@@ -1,6 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+[[ $# == 1 && -n $1 ]] || { printf 'Usage: startup session-name\n' >&2; exit 2; }
 SESSION_NAME=$1
-tmux new-session -d -s $SESSION_NAME -n editor
-tmux new-window -n nvim -e "nvim ." 
-tmux new-window -n terminal 
-tmux new-window -n docker
-tmux attach -t $SESSION_NAME 
+if ! tmux has-session -t "=$SESSION_NAME" 2>/dev/null; then
+    tmux new-session -d -s "$SESSION_NAME" -n editor
+    tmux new-window -t "=$SESSION_NAME:" -n nvim 'nvim .'
+    tmux new-window -t "=$SESSION_NAME:" -n terminal
+    tmux new-window -t "=$SESSION_NAME:" -n docker
+fi
+if [[ -n $TMUX ]]; then
+    tmux switch-client -t "=$SESSION_NAME"
+else
+    tmux attach-session -t "=$SESSION_NAME"
+fi

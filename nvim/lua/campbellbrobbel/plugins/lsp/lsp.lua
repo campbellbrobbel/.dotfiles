@@ -20,7 +20,7 @@ local on_attach = function(client, bufnr)
       style = "minimal",
     },
   })
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  local hover_options = {
     -- Dimensions
     width = 120,
     border = "rounded",
@@ -31,7 +31,7 @@ local on_attach = function(client, bufnr)
     -- Style
     focusable = true,
     style = "minimal",
-  })
+  }
 
   opts.desc = "Show LSP references"
   keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
@@ -70,7 +70,9 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
 
   opts.desc = "Show documentation for what is under cursor"
-  keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+  keymap.set("n", "K", function()
+    vim.lsp.buf.hover(hover_options)
+  end, opts) -- show documentation for what is under cursor
 
   opts.desc = "Restart LSP"
   keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
